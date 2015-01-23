@@ -1,22 +1,20 @@
-DRR1 Numbers
+DRR Numbers
 ============
 
-This is another interview question that I was asked, this was a test to be done at home with a 24h deadline. Here is the problem:
-
-Consider the number 142857. We can right-rotate this number by moving the last digit (7) to the front of it, 
-giving us 714285. It can be verified that 714285 = 5 × 142857.
-This demonstrates an unusual property of 142857: it is a divisor of its right-rotation.
+This is another interview question that I was asked. This was a test to be done at home with a 24h deadline. Here is the problem:
 
 Find the last 5 digits of the sum of all integers between 10^1 and 10^100, that are divisors of their right rotation.
 
+For example, consider the number 142857. We can right-rotate this number by moving the last digit (7) to the front of it, giving us 714285. It can be verified that 714285 = 5 × 142857. This demonstrates an unusual property of 142857: it is a divisor of its right-rotation.
+
 The test was actually to develop this using the K language (http://en.wikipedia.org/wiki/K_%28programming_language%29)
-which I did, but I first developed it in C# in order to better understand the problem and then re-wrote it with K  
-Because of this restriction I consciously limited myself to the simpler aspects of C# (e.g., no .NET libraries, no LINQ).
+which I did, but I first developed it in C# in order to better understand the problem, and then re-wrote it with K.  
+Because of this goal I consciously limited myself to the simpler aspects of C# (e.g., no .NET libraries, not even LINQ).
 
 Note: I am not posting the final K solution because I don't want to give away too much in case the company re-uses the question.
 
-The naive solution is to loop over the number range, verify which numbers meet the condition and calculate their
-modular sum, however this requires operating on 100-digit numbers.
+The naive solution is to loop over the number range, verify which numbers meet the condition and calculate the
+modular sum of the numbers that pass the filter, however this solution requires operating on 99-digit numbers.
 
 A "smarter search" can be done by taking into account the following:
 
@@ -31,7 +29,7 @@ A "smarter search" can be done by taking into account the following:
   multiplication with carry:
 
   7 X 5 = 35, next digit is 5 and carry is 3  
-  5 x 5 = 25, plus carry 25 + 3 = 28, next digit is 8 and carry is 2 
+  5 x 5 = 25, plus carry 25 + 3 = 28, next digit is 8 and carry is 2  
   8 x 5 = 40, plus carry 40 + 2 = 42, next digit is 2, carry is 4  
   2 x 5 = 10, plus carry 10 + 4 = 14, next digit is 4, carry is 1  
   4 x 5 = 20, plus carry 20 + 1 = 21, next digit is 1, carry is 2  
@@ -42,12 +40,12 @@ A "smarter search" can be done by taking into account the following:
   The pattern can be repeated periodically as many times as desired, if 142857 is a divisor of its right rotation,
   then 142587142587 is also a divisor of its right rotation.
 
-* We can evaluate the 81 possible combinations of multiplier and Least Significant Digit and calculate the
-  pattern that meets the condition, up to the point where it will periodically repeat.  
+* We can evaluate the 81 possible combinations of multiplier and Least Significant Digit, and calculate the
+  pattern that meets the condition up to the point where it will periodically repeat.  
   For each pattern we can then calculate how many times can it be repeated for a given number of digits. E.g., 
-  for 142857 and numbers up to 99 digits (n &lt; 10^100) we will have 99/6 = 16 patterns.  
-  We can then calculate the modularized sum by taking the lower 5 digits, multiplying by 16 and taking the lower 5 digits
-  again
+  for 142857 and numbers up to 99 digits (n &lt; 10^100) there are 99/6 = 16 numbers that contain the pattern.  
+  We can then calculate the modularized sum by taking the lower 5 digits, multiplying by 16 and taking the lower 5 
+  digits again
 
 * Two special cases to consider are
   1. Patterns that start with a 0.  
